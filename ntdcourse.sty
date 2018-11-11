@@ -1,0 +1,36 @@
+\ProvidesPackage{ntdcourse}
+
+%% Data
+\newcommand{\urlbase}{http://www.neil.dantam.name/csci-561}
+\date{Fall 2018}
+\usepackage{qrcode}
+
+\newcommand{\thecourse}{CSCI-561}
+
+%% Commands
+\newcommand{\slideqrcode}[3][]{
+  \hypersetup{urlcolor=black}%
+  \qrcode[#1]{\urlbase/B#2-#3.pdf}%
+  \hypersetup{urlcolor=blue}%
+}
+
+\newcommand{\slideurl}[2]{\url{\urlbase/B#1-#2.pdf}}
+
+
+\newcommand{\handoutslidelink}[2]{
+  \slideqrcode[height=\columnwidth]{#1}{#2}\\
+  \vspace{1em}
+}
+\newcommand{\makehandouttitle}[2]{
+\begin{minipage}{.80\textwidth}
+  \maketitle
+  \begin{center}
+    \vspace{-1.5em}
+    \slideurl{#1}{#2}
+  \end{center}
+\end{minipage}
+\begin{minipage}{.15\textwidth}
+  \slideqrcode[height=\columnwidth]{#1}{#2}
+\end{minipage}
+\thispagestyle{fancyplain}
+}

@@ -1,0 +1,36 @@
+CSCI-561 Project 2
+==================
+
+Code
+----
+
+Implement CNF conversion and DPLL using the starter code in
+project-2.lisp.  The grading script will test your implementation by
+calling the following functions:
+
+* EXP->CNF
+* SAT-P
+
+Significant starter code is provided.  Necessary portions for you to
+implement are marked with ;;TODO comments.
+
+Grading will use (approximately) the following procedure:
+
+    sbcl --load project-2.lisp --load project-2-solution.lisp \
+         --eval '(run-tests)' --eval '(sb-ext:quit)'
+
+Please ensure that your source file loads cleanly without errors or
+side-effects (printing, file output, etc.)
+
+Report
+------
+
+Answer the questions in report.pdf.
+
+Submission
+----------
+
+Submit two files:
+
+1. Lisp code
+2. Report PDF

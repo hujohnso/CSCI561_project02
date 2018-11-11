@@ -1,4 +1,5 @@
-/project-1-report.*
-!/project-1-report.tex
+/project-2-report.*
+!/project-2-report.tex
+!/project-2-report.pdf
 texput.*
 *~

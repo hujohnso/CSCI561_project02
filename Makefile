@@ -2,7 +2,6 @@ TEXFILES=$(wildcard *.tex)
 PDFFILES=$(patsubst %.tex,%.pdf,$(TEXFILES))
 DOTFILES=$(wildcard graphics/*.dot)
 PNGFILES=$(patsubst %.dot,%.png,$(DOTFILES))
-PNGFILES+=graphics/wumpus.png
 
 all: $(PDFFILES)
 

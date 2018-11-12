@@ -230,15 +230,21 @@
 
 ;; Distribute literals over a single AND expression:
 ;;
-;; (or lit-0 ... lit-1
+;;    or lit-0 ... lit-1
 ;;     (and (or ...) (or ...) ...))
 ;;
 ;; The result should be in conjunctive normal form
 (defun %dist-or-and-1 (literals and-exp)
   (assert (every #'lit-p literals))
   (assert (cnf-p and-exp))
-  ;; TODO: implement
-  `(or ,@literals ,and-exp))
+  (let ((result-exp))
+    (setq result-exp '(and))
+    (setq result-exp (append result-exp (list (append (cadr and-exp) literals))))
+    (setq result-exp (append result-exp (list (append (cadr (cdr and-exp)) literals))))
+
+    result-exp
+    ))
+
 ;; Distribute OR over two AND expressions:
 ;;
 ;; (or (and (or ...) (or ...) ...)

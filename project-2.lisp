@@ -443,8 +443,18 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
                  (values maxterms bindings)
                  ;; unit propagate
                  (progn
-                   ;; TODO: implement the recursive case
-                   nil))))
+                   (cond (propagated t)
+                         ((not propagated) nil)
+                         (t (let* ((new-literal (dpll-choose-literal maxterms))
+                                   (pos-bindings (and bindings new-literal))
+                                   (neg-bindings (and bindings (not new-literal))))
+                               (or (rec maxterms pos-bindings)
+                                   (rec maxterms neg-bindings)
+                               ))
+                           )
+
+                     )
+                  ))))
     (multiple-value-bind (nil-or-unsat bindings)
         (rec maxterms nil)
       (cond

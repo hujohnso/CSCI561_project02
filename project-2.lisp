@@ -145,28 +145,23 @@
                  e
                  `(not ,e)))
            (visit (e truth)
-             (format t "~%Visit was called with: ~%")
-             (princ e)
              (if (var-p e)
                  (base e truth)
                  (destructuring-bind (op &rest args) e
-                   (format t "~%******~%")
-                   (princ args)
-                   (format t "~%******~%")
                    (case op
-                     (:implies
+                     (:iff
                       (destructuring-bind (a b) args
                         (setq e
-                         `(and
-                           ,(visit (list :iff a b) truth) 
-                           ,(visit (list :iff b a) truth)
+                         `(or
+                           ,(visit (list :implies a b) truth) 
+                           ,(visit (list :implies b a) truth)
                            )
                          )                        
                         e))
-                     (:iff
+                     (:implies
                       (destructuring-bind (a b) args
                         (setq e 
-                              `(or 
+                              `(and 
                                 ,(visit a (not truth))
                                 ,(visit b truth)))
                         e))
@@ -175,13 +170,26 @@
                       (visit (car args) (not truth)))
                      (and
                       (setq e
-                            `(and 
-                             ,(visit (car args) truth)
-                             ,(visit (car (cdr args)) truth)))
+                            (if truth
+                                `(and 
+                                  ,(visit (car args) truth)
+                                  ,(visit (car (cdr args)) truth))
+                              `(or 
+                                ,(visit (car args) truth)
+                                ,(visit (car (cdr args)) truth)))
+                        )
                       e)
                      (or
-                      (visit (cdr args) truth)
-                       )
+                      (setq e
+                            (if truth
+                                `(or
+                                  ,(visit (car args) truth)
+                                  ,(visit (car (cdr args)) truth))
+                              `(and
+                                ,(visit (car args) truth)
+                                ,(visit (car (cdr args)) truth)))
+                            )
+                              e)
                      (otherwise
                       (base e truth)))))))
 
@@ -231,7 +239,6 @@
   (assert (cnf-p and-exp))
   ;; TODO: implement
   `(or ,@literals ,and-exp))
-
 ;; Distribute OR over two AND expressions:
 ;;
 ;; (or (and (or ...) (or ...) ...)

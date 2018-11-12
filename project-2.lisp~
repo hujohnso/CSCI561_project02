@@ -145,6 +145,8 @@
                  e
                  `(not ,e)))
            (visit (e truth)
+             (format t "~%Visit was called with: ~%")
+             (princ e)
              (if (var-p e)
                  (base e truth)
                  (destructuring-bind (op &rest args) e
@@ -155,26 +157,27 @@
                      (:implies
                       (destructuring-bind (a b) args
                         (setq e
-                         (and
-                               (:iff (visit a truth) (visit b truth)) 
-                               (:iff (visit b truth) (visit a truth))))
+                         `(and
+                           ,(visit (list :iff a b) truth) 
+                           ,(visit (list :iff b a) truth)
+                           )
+                         )                        
                         e))
                      (:iff
                       (destructuring-bind (a b) args
-                        (format t "~%-----~%")
-                        (princ a)
                         (setq e 
-                              (or (visit a (not truth))
-                                  (visit b truth)))
+                              `(or 
+                                ,(visit a (not truth))
+                                ,(visit b truth)))
                         e))
                      (not
                       (assert (and args (null (cdr args))))
                       (visit (car args) (not truth)))
-                     (and                     
+                     (and
                       (setq e
-                            (and 
-                             (visit (car args) truth)
-                             (visit (cdr args) truth)))
+                            `(and 
+                             ,(visit (car args) truth)
+                             ,(visit (car (cdr args)) truth)))
                       e)
                      (or
                       (visit (cdr args) truth)

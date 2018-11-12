@@ -145,14 +145,9 @@
                  e
                  `(not ,e)))
            (visit (e truth)
-             (format t "~%Visit was called with: ~%")
-             (princ e)
              (if (var-p e)
                  (base e truth)
                  (destructuring-bind (op &rest args) e
-                   (format t "~%******~%")
-                   (princ args)
-                   (format t "~%******~%")
                    (case op
                      (:implies
                       (destructuring-bind (a b) args
@@ -174,14 +169,28 @@
                       (assert (and args (null (cdr args))))
                       (visit (car args) (not truth)))
                      (and
-                      (setq e
-                            `(and 
-                             ,(visit (car args) truth)
-                             ,(visit (car (cdr args)) truth)))
+                      (if truth
+                          (setq e
+                                `(and 
+                                  ,(visit (car args) truth)
+                                  ,(visit (car (cdr args)) truth)))
+                        (setq e
+                              `(or 
+                                ,(visit (car args) truth)
+                                ,(visit (car (cdr args)) truth)))
+                        )
                       e)
                      (or
-                      (visit (cdr args) truth)
-                       )
+                      (if truth
+                          (setq e
+                                '(or
+                                  ,(visit (car args) truth)
+                                  ,(visit (car (cdr args))) truth))
+                        (setq e
+                              '(and
+                                ,(visit (car args) truth)
+                                ,(visit (car (cdr args)) truth)))
+                        e))
                      (otherwise
                       (base e truth)))))))
 

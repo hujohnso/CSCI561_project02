@@ -423,6 +423,10 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
                  (destructuring-bind (x &rest rest) rest
                    (if (maxterm-unit-p x)
                        (progn
+                         (print maxterms)
+                         (print "a")
+                         (print bindings)
+                         (print (assoc (car (maxterm-pos x)) bindings))
                          ;; TODO: propagate the unit clause
                          nil)
                        (rec rest)))
@@ -452,18 +456,11 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
                  (values maxterms bindings)
                  ;; unit propagate
                  (progn
-                   (cond (propagated t)
-                         ((not propagated) nil)
-                         (t (let* ((new-literal (dpll-choose-literal maxterms))
-                                   (pos-bindings (and bindings new-literal))
-                                   (neg-bindings (and bindings (not new-literal))))
-                               (or (rec maxterms pos-bindings)
-                                   (rec maxterms neg-bindings)
-                               ))
-                           )
-
-                     )
-                  ))))
+                   (let* ((propagated (dpll-unit-propagate maxterms bindings))
+                          (new-literal (dpll-choose-literal propagated)))
+                     (print new-literal)
+                     (or (rec maxterms (cons (cons new-literal t) bindings))
+                         (rec maxterms (cons (cons new-literal f) bindings))))))))
     (multiple-value-bind (nil-or-unsat bindings)
         (rec maxterms nil)
       (cond

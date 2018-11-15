@@ -17,5 +17,8 @@
   (test-case (exp->nnf '(not (:iff a b))) '(OR (AND A (NOT B)) (AND B (NOT A))))
 
   ; DPLL-UNIT-PROPAGATE
-  (test-case (dpll-unit-propagate (cnf-maxterms '(and a b)) '()) '((a t)))
+  (print "UP")
+  (print (dpll-unit-propagate (cnf-maxterms '(and (or a b) (or (not b) c d))) '((a t))))
+  ; (print (dpll (cnf-maxterms '(and (or a)))))
+  ; (test-case (sat-p '(and (or a))) nil)
 )

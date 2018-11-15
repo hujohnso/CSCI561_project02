@@ -236,14 +236,9 @@
 ;; The result should be in conjunctive normal form
 (defun %dist-or-and-1 (literals and-exp)
   (assert (every #'lit-p literals))
-  (assert (cnf-p and-exp))
-  (let ((result-exp))
-    (setq result-exp '(and))
-    (setq result-exp (append result-exp (list (append (cadr and-exp) literals))))
-    (setq result-exp (append result-exp (list (append (cadr (cdr and-exp)) literals))))
-
-    result-exp
-    ))
+  (assert (cnf-p and-exp))    
+    `(and ,@(map 'list #'( lambda(exp) (append  exp literals)) (cdr and-exp)))
+)
 
 ;; Distribute OR over two AND expressions:
 ;;
@@ -254,8 +249,9 @@
 (defun %dist-or-and-and (and-exp-1 and-exp-2)
   (assert (cnf-p and-exp-1))
   (assert (cnf-p and-exp-2))
-  ;; TODO: implement
-  `(or ,and-exp-1 ,and-exp-2))
+  (reduce #'append `(,@(map 'list #'(lambda(lit)(cdr (%dist-or-and-1 (cdr lit)and-exp-1))) (cdr and-exp-2))) :initial-value '(and))
+  
+)
 
 
 ;; Distribute n-ary OR over the AND arguments:

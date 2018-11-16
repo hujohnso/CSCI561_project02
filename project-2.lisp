@@ -165,6 +165,19 @@
                                 ,(visit a (not truth))
                                 ,(visit b truth)))
                         e))
+                     (:xor
+                      (destructuring-bind (a b) args
+                        (let* ((term1 `(or ,(visit a truth)
+                                           ,(visit b truth)))
+                               (term2 `(or ,(visit a (not truth))
+                                           ,(visit b (not truth))))
+                               )
+                            (setq e 
+                                  `(and
+                                    ,term1
+                                    ,term2)
+                                  )
+                      e)))
                      (not
                       (assert (and args (null (cdr args))))
                       (visit (car args) (not truth)))

@@ -184,9 +184,11 @@
                      (and
                       (setq e
                             (if truth
-                                `(and 
-                                  ,(visit (car args) truth)
-                                  ,(visit (car (cdr args)) truth))
+                                `(and
+                                  ,@(map 'list #'lambda(exp)(visit exp truth) (car args)))
+                                  
+                                  ;,(visit (car args) truth)
+                                  ;,(visit (car (cdr args)) truth))
                               `(or 
                                 ,(visit (car args) truth)
                                 ,(visit (car (cdr args)) truth)))

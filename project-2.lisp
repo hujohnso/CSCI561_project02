@@ -152,32 +152,29 @@
                      (:iff
                       (destructuring-bind (a b) args
                         (setq e
-                         `(and
-                           ,(visit (list :implies a b) truth) 
-                           ,(visit (list :implies b a) truth)
-                           )
-                         )                        
+                              (visit `(and
+                                       (:implies ,a ,b)
+                                       (:implies ,b ,a))
+                                     truth))
                         e))
                      (:implies
                       (destructuring-bind (a b) args
-                        (setq e 
-                              `(or 
-                                ,(visit a (not truth))
-                                ,(visit b truth)))
+                        (setq e
+                              (visit `(or 
+                                       (not ,a)
+                                       ,b)
+                                     truth)) 
                         e))
                      (:xor
                       (destructuring-bind (a b) args
-                        (let* ((term1 `(or ,(visit a truth)
-                                           ,(visit b truth)))
-                               (term2 `(or ,(visit a (not truth))
-                                           ,(visit b (not truth))))
-                               )
-                            (setq e 
-                                  `(and
-                                    ,term1
-                                    ,term2)
-                                  )
-                      e)))
+                        (setq e
+                              (visit
+                               `(and
+                                 (or ,a ,b)
+                                 (not (and ,a ,b)))
+                               truth)
+                              )
+                      e))
                      (not
                       (assert (and args (null (cdr args))))
                       (visit (car args) (not truth)))

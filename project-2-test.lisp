@@ -11,6 +11,7 @@
 
 (defun run-tests ()
   ; EXP->NNF
+<<<<<<< HEAD
   (test-case (exp->nnf '(not (not a))) 'a)
   (test-case (exp->nnf '(not (and a b))) '(OR (NOT A) (NOT B)))
   (test-case (exp->nnf '(not (or a (not b)))) '(AND (NOT A) B))
@@ -33,6 +34,8 @@
   ; DPLL-UNIT-PROPAGATE
   ;(print "UP")
   ;(print (dpll-unit-propagate (cnf-maxterms '(and (or a b) (or (not b) c d))) '((a t))))
-  ; (print (dpll (cnf-maxterms '(and (or a)))))
+  (test-case (dpll (cnf-maxterms '(and (or a)))) t)
+  (test-case (dpll (cnf-maxterms '(and (or a) (or (not a))))) nil)
+  ; (print (dpll (cnf-maxterms '(and (or a) (or b)))))
   ; (test-case (sat-p '(and (or a))) nil)
 )

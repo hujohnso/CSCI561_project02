@@ -152,7 +152,7 @@
                      (:iff
                       (destructuring-bind (a b) args
                         (setq e
-                         `(or
+                         `(and
                            ,(visit (list :implies a b) truth) 
                            ,(visit (list :implies b a) truth)
                            )
@@ -161,7 +161,7 @@
                      (:implies
                       (destructuring-bind (a b) args
                         (setq e 
-                              `(and 
+                              `(or 
                                 ,(visit a (not truth))
                                 ,(visit b truth)))
                         e))
@@ -185,25 +185,19 @@
                       (setq e
                             (if truth
                                 `(and
-                                  ,@(map 'list #'lambda(exp)(visit exp truth) (car args)))
-                                  
-                                  ;,(visit (car args) truth)
-                                  ;,(visit (car (cdr args)) truth))
+                                  ,@(map 'list #'(lambda(exp)(visit  exp truth)) args))
                               `(or 
-                                ,(visit (car args) truth)
-                                ,(visit (car (cdr args)) truth)))
-                        )
+                                ,@(map 'list #'(lambda(exp)(visit  exp truth)) args))
+                              ))
                       e)
                      (or
                       (setq e
                             (if truth
                                 `(or
-                                  ,(visit (car args) truth)
-                                  ,(visit (car (cdr args)) truth))
+                                   ,@(map 'list #'(lambda(exp)(visit  exp truth)) args))
                               `(and
-                                ,(visit (car args) truth)
-                                ,(visit (car (cdr args)) truth)))
-                            )
+                                 ,@(map 'list #'(lambda(exp)(visit  exp truth)) args))
+                            ))
                               e)
                      (otherwise
                       (base e truth)))))))

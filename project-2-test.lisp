@@ -21,7 +21,7 @@
   ; EXP->CNF
   ;Base cases/powerpoint cases
   (test-case (exp->cnf '(:iff A B)) '(and (or (NOT A) B) (or A (NOT B))))
-  (test-case (exp->cnf '(:implies A B)) (or (not A) B))
+  (test-case (exp->cnf '(:implies A B)) '(or (not A) B))
   (test-case (exp->cnf '(:xor A B)) '(and (or (not A) (not B)) (or A B)))
   (test-case (exp->cnf '(not (not a))) 'a)
   (test-case (exp->cnf '(not (and a b))) '(OR (NOT A) (NOT B)))

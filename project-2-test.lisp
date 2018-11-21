@@ -36,6 +36,6 @@
   ;(print (dpll-unit-propagate (cnf-maxterms '(and (or a b) (or (not b) c d))) '((a t))))
   (test-case (dpll (cnf-maxterms '(and (or a)))) t)
   (test-case (dpll (cnf-maxterms '(and (or a) (or (not a))))) nil)
-  ; (print (dpll (cnf-maxterms '(and (or a) (or b)))))
+  (test-case (dpll (cnf-maxterms '(and (or a) (or (not a))))) nil)
   ; (test-case (sat-p '(and (or a))) nil)
 )

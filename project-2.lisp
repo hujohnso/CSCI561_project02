@@ -428,12 +428,10 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
              (if (consp rest)
                  (destructuring-bind (x &rest rest) rest
                    (if (maxterm-unit-p x)
-                       (progn
-                         (values
-                           (dpll-bind maxterms (car (maxterm-pos x)) t bindings)
-                           bindings
-                         ))
-                       (rec rest)))
+                     (if (eq (maxterm-pos x) nil)
+                       (repeat (car (maxterm-neg x)) nil)
+                       (repeat (car (maxterm-pos x)) t))
+                     (rec rest)))
                  ;; no unit clauses
                  (values maxterms bindings))))
     (rec maxterms)))

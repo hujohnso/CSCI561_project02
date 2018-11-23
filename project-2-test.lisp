@@ -33,4 +33,5 @@
   ; DPLL
   (test-case (dpll (cnf-maxterms '(and (or a)))) t)
   (test-case (dpll (cnf-maxterms '(and (or a) (or (not a))))) nil)
+  (test-case (dpll (cnf-maxterms '(and (or a b) (or (not a) b)))) t)
 )

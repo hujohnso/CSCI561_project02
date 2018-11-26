@@ -1,0 +1,20 @@
+(define (:domain hanoi)
+	(:requirements [:strips] [:equality] [:typing] [:adl])
+        (:predicates 
+         (on ?x ?y)
+         (smaller ?x ?y)
+         (clear ?x))
+        (:action move-disk
+         :parameters (?disk, ?from, ?to)
+         :precondition (and (smaller ?disk ?to)
+                            (smaller ?disk ?from)
+                            (on ?disk ?from)
+                            (clear ?disc)
+                            (clear ?to)
+                            (not (= ?from ?to)))
+         :effect (and (clear ?from)
+                      (on ?disk ?to)
+                      (not (on ?disk ?from))
+                      (not (clear ?to)))
+		      ))
+

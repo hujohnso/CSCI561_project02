@@ -30,9 +30,8 @@
   (test-case (exp->nnf '(:implies (not (or a b)) c)) '(or (not a) (not b) c))
   (test-case (exp->CNF '(:xor (not (or a b)) (and a c))) '(and (or (not b) a) (or (not a) c) (or (not b)) c))
 
-  ; DPLL-UNIT-PROPAGATE
-  ;(print "UP")
-  ;(print (dpll-unit-propagate (cnf-maxterms '(and (or a b) (or (not b) c d))) '((a t))))
-  ; (print (dpll (cnf-maxterms '(and (or a)))))
-  ; (test-case (sat-p '(and (or a))) nil)
+  ; DPLL
+  (test-case (dpll (cnf-maxterms '(and (or a)))) t)
+  (test-case (dpll (cnf-maxterms '(and (or a) (or (not a))))) nil)
+  (test-case (dpll (cnf-maxterms '(and (or a b) (or (not a) b)))) t)
 )

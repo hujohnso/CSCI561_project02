@@ -463,17 +463,11 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
                          (nil-bind (dpll-bind maxterms new-literal nil bindings)))
                     (multiple-value-bind (maxterms bindings) true-bind
                       (multiple-value-bind (maxterms bindings) (rec maxterms bindings)
-                        (cond
-                          ((null maxterms)
-                           (values nil bindings))
-                          (t (multiple-value-bind (maxterms bindings) nil-bind
+                        (if (not maxterms)
+                            (values nil bindings)
+                            (multiple-value-bind (maxterms bindings) nil-bind
                               (multiple-value-bind (maxterms bindings) (rec maxterms bindings)
-                                (cond
-                                  ((null maxterms)
-                                   (values nil bindings))
-                                  (t (values maxterms bindings)))))
-                             ))))
-                    ))))))
+                                (values maxterms bindings))))))))))))
     (multiple-value-bind (nil-or-unsat bindings)
         (rec maxterms nil)
       (cond

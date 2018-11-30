@@ -458,16 +458,29 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
               (if (maxterm-result maxterms)
                 (values maxterms bindings)
                 (progn
-                  (let* ((new-literal (dpll-choose-literal maxterms))
-                         (true-bind (dpll-bind maxterms new-literal t bindings))
-                         (nil-bind (dpll-bind maxterms new-literal nil bindings)))
-                    (multiple-value-bind (maxterms bindings) true-bind
-                      (multiple-value-bind (maxterms bindings) (rec maxterms bindings)
-                        (if (not maxterms)
-                            (values nil bindings)
-                            (multiple-value-bind (maxterms bindings) nil-bind
-                              (multiple-value-bind (maxterms bindings) (rec maxterms bindings)
-                                (values maxterms bindings))))))))))))
+                  (let* ((new-literal (dpll-choose-literal maxterms)))
+                    (multiple-value-bind (true-maxterms true-bindings)
+                                         (dpll-bind maxterms new-literal t bindings)
+                      (multiple-value-bind (m b)
+                                           (rec true-maxterms true-bindings)
+                        (if (not m)
+                            (values nil b)
+                            (multiple-value-bind (nil-maxterms nil-bindings)
+                                                 (dpll-bind maxterms new-literal nil bindings)
+                              (rec nil-maxterms nil-bindings)))))))))))
+                ; (progn
+                ;   (let* ((new-literal (dpll-choose-literal maxterms))
+                ;          (true-bind (dpll-bind maxterms new-literal t bindings))
+                ;          (nil-bind (dpll-bind maxterms new-literal nil bindings)))
+                ;     (multiple-value-bind (maxterms bindings) true-bind
+                ;       (print "ohea")
+                ;       (print maxterms)(print "oheaohea")(print bindings)
+                ;       (multiple-value-bind (maxterms bindings) (rec maxterms bindings)
+                ;         (if (not maxterms)
+                ;             (values nil bindings)
+                ;             (multiple-value-bind (maxterms bindings) nil-bind
+                ;               (multiple-value-bind (maxterms bindings) (rec maxterms bindings)
+                ;                 (values maxterms bindings))))))))))))
     (multiple-value-bind (nil-or-unsat bindings)
         (rec maxterms nil)
       (cond
@@ -485,13 +498,13 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
     (when is-sat
       ;; Check that expression evaluates to true with chosen bindings
       ; Dantam said that he comments out this assertion when grading
-      (assert (exp-eval e bindings))
+      ; (assert (exp-eval e bindings))
       )
     (values is-sat bindings)))
 
 
 (defun test-fun ()
-    (dpll (cnf-maxterms (exp->cnf 
+    (sat-p
 '(and ( or (NOT noop_clear_peg2-1)    clear_peg2-0 )
 ( or (NOT noop_clear_peg3-1)   clear_peg3-0 )
 ( or (NOT noop_smaller_disk1_disk2-1)    smaller_disk1_disk2-0 )
@@ -694,4 +707,4 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
  on_disk1_disk2-3 
 )
     )
-)))
+)

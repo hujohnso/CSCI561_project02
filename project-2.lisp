@@ -1,3 +1,8 @@
+;;;
+;;; NAMES:
+;;; Jonathan Evans, Hunter Johnson, Jane Lockshin, Sarah Person
+;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; HELPER FUNCTIONS ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

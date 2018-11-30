@@ -66,6 +66,8 @@
   (test-case (sat-p '(and (:iff (and a b) (or (not a) b)) (not a))) nil)
   (test-case (sat-p '(:iff a (not a))) nil)
   (test-case (sat-p '(:iff (and a b) (not (and a b)))) nil)
+  (test-case (sat-p '(and (or (not a) b) (or a (not b)))) t)
+  (test-case (sat-p '(or a b)) t)
 
   (multiple-value-bind (a b) (sat-p 
 '(and ( or (NOT noop_clear_peg2-1)    clear_peg2-0 )

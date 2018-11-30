@@ -16,7 +16,7 @@
 ( or (NOT noop_clear_disk1-1)    (clear_disk1-0 ))
 ( or (NOT noop_smaller_disk2_peg2-1)    (smaller_disk2_peg2-0 ))
 ( or (NOT noop_smaller_disk2_peg3-1)    (smaller_disk2_peg3-0 ))
-( or (NOT noop_clear_peg3-2)    (clear_peg3-1 )
+( or (NOT noop_clear_peg3-2)    (clear_peg3-1 ))
 ( or (NOT noop_smaller_disk1_disk2-2 )   (smaller_disk1_disk2-1 ))
 ( or (NOT move-disk_disk1_peg3_disk2-2)   (clear_disk2-1 ))
 ( or (NOT move-disk_disk1_peg3_disk2-2 )  (clear_disk1-1 ))

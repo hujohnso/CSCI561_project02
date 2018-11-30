@@ -485,13 +485,13 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
     (when is-sat
       ;; Check that expression evaluates to true with chosen bindings
       ; Dantam said that he comments out this assertion when grading
-      ;(assert (exp-eval e bindings)))
+      (assert (exp-eval e bindings))
       )
     (values is-sat bindings)))
 
 
 (defun test-fun ()
-    (exp->cnf 
+    (dpll (cnf-maxterms (exp->cnf 
 '(and ( or (NOT noop_clear_peg2-1)    clear_peg2-0 )
 ( or (NOT noop_clear_peg3-1)   clear_peg3-0 )
 ( or (NOT noop_smaller_disk1_disk2-1)    smaller_disk1_disk2-0 )
@@ -664,8 +664,8 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
 ( or (NOT move-disk_disk1_peg2_peg3-2)    (NOT noop_on_disk1_peg2-2 ))
 ( or (NOT move-disk_disk1_peg2_peg3-2)    (NOT noop_on_disk1_peg3-2 ))
 ( or (NOT noop_on_disk1_peg2-2)    (NOT noop_on_disk1_peg3-2 ))
-( or (noop_on_disk2_peg3-3)  move-disk_disk2_peg1_peg3-3  move-disk_disk2_peg2_peg3-3  )
-( or (noop_on_disk1_disk2-3)  move-disk_disk1_peg2_disk2-3  move-disk_disk1_peg3_disk2-3  )
+( or noop_on_disk2_peg3-3  move-disk_disk2_peg1_peg3-3  move-disk_disk2_peg2_peg3-3  )
+( or noop_on_disk1_disk2-3  move-disk_disk1_peg2_disk2-3  move-disk_disk1_peg3_disk2-3  )
 ( or (NOT move-disk_disk2_peg2_peg3-3 )   (NOT move-disk_disk1_peg2_disk2-3 ))
 ( or (NOT move-disk_disk2_peg2_peg3-3 )   (NOT move-disk_disk1_peg3_disk2-3 ))
 ( or (NOT move-disk_disk2_peg2_peg3-3 )   (NOT move-disk_disk2_peg1_peg3-3 ))
@@ -694,4 +694,4 @@ RESULT: (VALUES MAXTERMS BINDINGS)"
  on_disk1_disk2-3 
 )
     )
-)
+)))
